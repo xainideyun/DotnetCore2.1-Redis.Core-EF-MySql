@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\Font-Awesome\.github\ISSUE_TEMPLATE\bug-report.md" />
+    <None Include="wwwroot\css\Font-Awesome\.github\ISSUE_TEMPLATE\feature-request.md" />
+    <None Include="wwwroot\css\Font-Awesome\.github\ISSUE_TEMPLATE\icon-request.md" />
+    <None Include="wwwroot\css\Font-Awesome\.github\PULL_REQUEST_TEMPLATE.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Redis.Stu.Common\Redis.Stu.Common.csproj" />
+    <ProjectReference Include="..\Redis.Stu.Model\Redis.Stu.Model.csproj" />
+    <ProjectReference Include="..\Redis.Stu.Repository\Redis.Stu.Repository.csproj" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1Development_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

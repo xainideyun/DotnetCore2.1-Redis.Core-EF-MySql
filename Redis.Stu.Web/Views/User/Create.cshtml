@@ -1,0 +1,81 @@
+﻿@model Redis.Stu.Model.Data.Student
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Scripts {
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                entity: {}
+            },
+            methods: {
+                create: function () {
+                    $.loading();
+                    axios.post("create", this.entity)
+                        .then(function (res) {
+                            $.loaded();
+                            $.alert("添加成功", "success");
+                            //setTimeout(() => location.href = "/User/Index", 2000);
+                        });
+                }
+            }
+        });
+    </script>
+}
+
+<h2>创建新学生</h2>
+
+<h4>学生信息</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label">姓名</label>
+                <input class="form-control" v-model="entity.name" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">年龄</label>
+                <input type="number" class="form-control" v-model="entity.age" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">编码</label>
+                <input class="form-control" v-model="entity.code" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">密码</label>
+                <input class="form-control" type="password" v-model="entity.password" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">性别</label>
+                <select class="form-control" v-model="entity.sex">
+                    <option value="1">男</option>
+                    <option value="2">女</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">描述：</label>
+                <input class="form-control" v-model="entity.remark" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">所在年级：</label>
+                <select class="form-control" v-model="entity.gradeId">
+                    @foreach (Grade grade in ViewBag.Grades)
+                    {
+                        <option value="@grade.ID">@grade.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <button @@click="create()" class="btn btn-default">创建</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">返回列表</a>
+</div>

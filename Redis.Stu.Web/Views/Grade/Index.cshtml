@@ -1,0 +1,85 @@
+﻿@model System.Collections.Generic.IEnumerable<Grade>
+@{
+    ViewData["Title"] = "年级分类-一对多";
+}
+
+@section Scripts {
+    <script>
+        (function(){
+            new Vue({
+                el: "#app",
+                data: {
+                    grades: JSON.parse('@Html.Raw(ViewBag.Grades)'),
+                    students: []
+                },
+                methods: {
+                    change(grade) {
+                        var self = this;
+                        this.grades.forEach(function (obj) {
+                            obj.active = false;
+                        });
+                        grade.active = true;
+                        axios.get("/Grade/GetStudents/" + grade.id)
+                            .then(function (res) {
+                                if (!res.data.success) {
+                                    $.alert(res.data.msg);
+                                    return;
+                                }
+                                self.students = res.data.data;
+                            })
+                            .catch(function (err) {
+                                $.alert(err);
+                            });
+                    }
+                }
+            });
+        })();
+
+    </script>
+}
+
+<div class="row" style="min-height: 400px;">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list"></i>
+                <span>年级列表</span>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item" v-for="grade in grades" @@click="change(grade)" v-bind:class="{'active': grade.active}">
+                    <span>{{grade.name}}</span>
+                    <span class="badge">{{grade.count}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-group"></i>
+                <span>年级成员</span>
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="40">#</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>编号</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(student, index) in students">
+                        <td>{{index + 1}}</td>
+                        <td>{{student.name}}</td>
+                        <td>{{student.sex == 1 ? '男' : '女'}}</td>
+                        <td>{{student.code}}</td>
+                        <td>{{student.remark}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

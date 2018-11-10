@@ -1,0 +1,78 @@
+﻿@model Student
+@{
+    ViewData["Title"] = "学生选课";
+}
+
+@section Scripts {
+
+    <script>
+        (function () {
+
+            new Vue({
+                el: "#app",
+                data: {
+                    list: JSON.parse('@Html.Raw(ViewBag.courses)')
+                },
+                methods: {
+                    submit: function () {
+                        var data = this.selected.map(function (obj) { return { id: obj.id }; });
+                        axios.post("/User/SaveCourse", data)
+                            .then(function (res) {
+                                $.alert(res.data, "success");
+                            });
+                    }
+                },
+                computed: {
+                    selected: function () {
+                        return this.list.filter(function (obj) { return obj.checked; });
+                    }
+                }
+            });
+        })();
+    </script>
+
+}
+
+
+<h2>选择课程</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form class="form-horizontal" action="javascript:void(0)">
+            <div class="form-group">
+                <label class="control-label">选课学生：</label>
+                <input class="form-control" disabled value="@Model.Name" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">编号：</label>
+                <input class="form-control" disabled value="@Model.Code" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">可选课程：</label>
+                <div>
+                    <label class="checkbox-inline" v-for="item in list">
+                        <input type="checkbox" :value="item.id" v-model="item.checked"> {{item.name}}
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">已选课程：</label>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="item in selected">
+                        {{item.name}}
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group">
+                <input type="submit" @@click="submit()" value="保存" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">返回列表</a>
+</div>
+
+
+
